@@ -12,38 +12,52 @@ function getRandomArbitrary(min, max) {
   const randomNumber = getRandomArbitrary(1,5)
   console.log(randomNumber)
 
-let chances = 5;
 
-enterBtn.addEventListener('click', ()=>{
+const win = () =>{
+    winingMsg.innerText = 'You have won the match'
+    winingMsg.classList.add('winMsg')
+    lostMsg.innerText = ''
+    enterBtn.setAttribute('disabled' , 'disabled')
+}
+const lost = () =>{
+    lostMsg.innerText = 'You guess wrong Please Try Again'
+    winingMsg.innerText = '';
+    lostMsg.classList.add('lostMsg')
     
-    if(randomNumber==inputNumber.value){
-        winingMsg.innerText = 'Congratulation you guess right and won the match';
-        lostMsg.innerText = ''
-    }else{
-        lostMsg.innerText = 'you guess wrong ,Try again !';
-        winingMsg.innerText = ''
-        
-    }
-    chances--;
-    if(chances<0){
-        finished.innerText = 'Game Over'
-        lostMsg.innerText = ''
-        winingMsg.innerText = ''
-        
-    }else{
-        totalChances.textContent = chances;
-
-    }
-    inputNumber.value = ''
-})
+}
 
 const reset = () =>{
-    chances = 5;
+    chances = 3;
     totalChances.textContent = chances;
     lostMsg.innerText = '';
     winingMsg.innerText = '';
     finished.innerText = '';
+    inputNumber.value = ''
+    enterBtn.removeAttribute('disabled', 'disabled')
 
 
 }
+
+let chances = 3;
+enterBtn.addEventListener('click', ()=>{
+    chances--;
+    if(chances>0){
+      
+        if(randomNumber==inputNumber.value){
+            win()
+        }else{
+           lost()
+            
+        }
+    }else{
+        finished.innerText = `You have  lost the game random Number is : ${randomNumber}`
+        finished.classList.add('finishedMsg')
+        lostMsg.innerText = ''
+        winingMsg.innerText = ''
+        enterBtn.setAttribute('disabled' , 'disabled')
+    }
+    totalChances.textContent = chances;
+    inputNumber.value = ''
+})
+
 newGame.addEventListener('click', reset)
